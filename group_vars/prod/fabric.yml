@@ -1,0 +1,30 @@
+
+---
+fabric:
+  name: fabric-prod
+  asn: 65027
+  inventory:
+    - seed_ip: 10.15.27.18
+      auth_proto: MD5
+      user_name: admin
+      password: "cisco.123"
+      max_hops: 0
+      role: spine
+      preserve_config: false
+    - seed_ip: 10.15.27.19
+      user_name: admin
+      password: "cisco.123"
+      max_hops: 0
+      role: leaf
+      preserve_config: false
+    - seed_ip: 10.15.27.20
+      user_name: admin
+      password: "cisco.123"
+      max_hops: 0
+      role: leaf
+      preserve_config: false
+  spine:
+    - ip: 10.15.27.18
+  leaf:
+    - ip: 10.15.27.19
+    - ip: 10.15.27.20

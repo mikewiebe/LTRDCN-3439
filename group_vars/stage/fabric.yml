@@ -1,0 +1,52 @@
+
+---
+fabric:
+  name: fabric-stage
+  asn: 65027
+  inventory:
+    - seed_ip: 10.15.27.11
+      auth_proto: MD5
+      user_name: admin
+      password: "cisco.123"
+      max_hops: 0
+      role: spine
+      preserve_config: false
+    - seed_ip: 10.15.27.12
+      user_name: admin
+      password: "cisco.123"
+      max_hops: 0
+      role: leaf
+      preserve_config: false
+    - seed_ip: 10.15.27.13
+      user_name: admin
+      password: "cisco.123"
+      max_hops: 0
+      role: leaf
+      preserve_config: false
+    # Comment/Uncomment this added later in the lab
+    - seed_ip: 10.15.27.14
+      user_name: admin
+      password: "cisco.123"
+      max_hops: 0
+      role: leaf
+      preserve_config: false
+  spine:
+    - ip: 10.15.27.11
+  leaf:
+    - ip: 10.15.27.12
+    - ip: 10.15.27.13
+    # Comment/Uncomment this added later in the lab
+    - ip: 10.15.27.14
+
+# Add later in lab
+fabric_external:
+  name: external-fabric-stage
+  asn: 9999
+  inventory:
+    - seed_ip: 10.15.27.15
+      auth_proto: MD5
+      user_name: admin
+      password: "cisco.123"
+      max_hops: 0
+      preserve_config: true
+      # role: spine

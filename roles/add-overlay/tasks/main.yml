@@ -1,0 +1,75 @@
+---
+# tasks file for /home/cisco/Documents/ndfclab/ansible/roles/add-overlay
+
+- ansible.builtin.debug:
+    msg:
+      - "----------------------------------------------------------------"
+      - "+             Calling Role - [add-overlay]                     +"
+      - "----------------------------------------------------------------"
+
+# --------------------
+# CREATE VRFS SECTION
+# --------------------
+- name: update attachments of vrfs
+  set_fact:
+    update_list: "{{ update_list + update }}"
+  loop: "{{ vrfs }}"
+  loop_control:
+    label: "{{ item.vrf_name }}"
+    index_var: i
+  vars:
+    update_list: []
+    update:
+      - path: vrfs[{{ i }}].attach
+        value: "{{ vrf_attach_group[item.attach_group] }}"
+
+- name: update VRF config
+  ansible.utils.update_fact:
+    updates: "{{ update_list }}"
+  register: updated_vrfs
+
+- name: current vrf config
+  debug:
+    msg: "{{ item }}"
+  loop: "{{ updated_vrfs.vrfs }}"
+  loop_control:
+    label: "{{ item.vrf_name }}"
+
+- name: create vrfs
+  cisco.dcnm.dcnm_vrf:
+    fabric: "{{ fabric.name }}"
+    config: "{{ updated_vrfs.vrfs }}"
+
+# ------------------------
+# CREATE NETWORKS SECTION
+# ------------------------
+
+- name: update attachments of network
+  set_fact:
+    update_list: "{{ update_list + update }}"
+  loop: "{{ networks }}"
+  loop_control:
+    label: "{{ item.net_name }}"
+    index_var: i
+  vars:
+    update_list: []
+    update:
+      - path: networks[{{ i }}].attach
+        value: "{{ attach_group[item.attach_group] }}"
+
+- name: update network config
+  ansible.utils.update_fact:
+    updates: "{{ update_list }}"
+  register: updated_network
+
+- name: current network config
+  debug:
+    msg: "{{ item }}"
+  loop: "{{ updated_network.networks }}"
+  loop_control:
+    label: "{{ item.net_name }}"
+
+- name: create networks
+  cisco.dcnm.dcnm_network:
+    fabric: "{{ fabric.name }}"
+    config: "{{ updated_network.networks }}"

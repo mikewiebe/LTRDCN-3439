@@ -1,0 +1,21 @@
+---
+# tasks file for /home/cisco/Documents/ndfclab/ansible/roles/add-inventory
+
+
+- ansible.builtin.debug:
+    msg:
+      - "----------------------------------------------------------------"
+      - "+             Calling Role - [add-inventory]                   +"
+      - "----------------------------------------------------------------"
+
+- name: Add switches to fabric  {{ fabric.name }}
+  cisco.dcnm.dcnm_inventory:
+    fabric: "{{ fabric.name }}"
+    state: merged
+    config: "{{ fabric.inventory }}"
+
+- name: Add switches to fabric  {{ fabric_external.name }}
+  cisco.dcnm.dcnm_inventory:
+    fabric: "{{ fabric_external.name }}"
+    state: merged
+    config: "{{ fabric_external.inventory }}"

@@ -1,0 +1,69 @@
+---
+# tasks file for /home/cisco/Documents/ndfclab/ansible/roles/create-fabric
+
+
+- ansible.builtin.debug:
+    msg:
+      - "----------------------------------------------------------------"
+      - "+             Calling Role - [create-fabric]                   +"
+      - "----------------------------------------------------------------"
+
+- name: Get Fabric List
+  cisco.dcnm.dcnm_rest:
+    method: GET
+    path: "/appcenter/cisco/ndfc/api/v1/lan-fabric/rest/control/fabrics"
+  register: result
+
+- ansible.builtin.set_fact:
+    create_fabric: True
+
+# ADD Later in Lab
+- ansible.builtin.set_fact:
+    create_fabric_ext: True
+
+- ansible.builtin.set_fact:
+    create_fabric: False
+  when: item.fabricName == fabric.name
+  loop: "{{ result.response.DATA }}"
+  loop_control:
+    label: "{{ item.fabricName }}"
+
+# ADD Later in Lab
+- ansible.builtin.set_fact:
+    create_fabric_ext: False
+  when: item.fabricName == "external-{{ fabric.name }}"
+  loop: "{{ result.response.DATA }}"
+  loop_control:
+    label: "{{ item.fabricName }}"
+
+- ansible.builtin.debug:
+    msg: "Fabric {{ fabric.name}} Already Exists"
+  when: not create_fabric
+
+# ADD Later in Lab
+- ansible.builtin.debug:
+    msg: "Fabric external-{{ fabric.name}} Already Exists"
+  when: not create_fabric_ext
+
+- name: Create Fabric {{ fabric.name }} on NDFC
+  vars:
+    payload:
+        BGP_AS: "{{ fabric.asn }}"
+        GRFIELD_DEBUG_FLAG: "Enable"
+        OVERLAY_MODE: "cli"
+  cisco.dcnm.dcnm_rest:
+    method: POST
+    path: "/appcenter/cisco/ndfc/api/v1/lan-fabric/rest/control/fabrics/{{ fabric.name }}/Easy_Fabric"
+    json_data: "{{ payload| to_json }}"
+  when: create_fabric
+
+# ADD Later in Lab
+- name: Create External Fabric on NDFC
+  vars:
+    payload:
+        BGP_AS: "{{ fabric_external.asn }}"
+  cisco.dcnm.dcnm_rest:
+    method: POST
+    path: "/appcenter/cisco/ndfc/api/v1/lan-fabric/rest/control/fabrics/{{ fabric_external.name }}/External_Fabric"
+    json_data: "{{ payload| to_json }}"
+  when: create_fabric_ext

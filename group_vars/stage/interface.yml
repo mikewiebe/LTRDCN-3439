@@ -1,0 +1,37 @@
+
+---
+interface:
+  vpc:
+    - name: vpc10
+      type: vpc
+      switch:
+        - 10.15.27.12
+        - 10.15.27.13
+      profile:
+        admin_state: true
+        mode: trunk
+        peer1_members:
+          - e1/5
+        peer2_members:
+          - e1/5
+        pc_mode: 'active'
+        bpdu_guard: true
+        port_type_fast: true
+        mtu: jumbo
+    - name: vpc20
+      type: vpc
+      switch:
+        - 10.15.27.12
+        - 10.15.27.13
+      profile:
+        admin_state: true
+        mode: trunk
+        peer1_members:
+          - e1/6
+        peer2_members:
+          - e1/6
+        pc_mode: 'active'
+        bpdu_guard: true
+        port_type_fast: true
+        mtu: jumbo
+

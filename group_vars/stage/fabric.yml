@@ -49,4 +49,4 @@ fabric_external:
       password: "cisco.123"
       max_hops: 0
       preserve_config: true
-      # role: spine
+      role: "edge_router"

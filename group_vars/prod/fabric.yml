@@ -23,8 +23,30 @@ fabric:
       max_hops: 0
       role: leaf
       preserve_config: false
+    # Comment/Uncomment this added later in the lab
+    - seed_ip: 10.15.27.21
+      user_name: admin
+      password: "cisco.123"
+      max_hops: 0
+      role: leaf
+      preserve_config: false
   spine:
     - ip: 10.15.27.18
   leaf:
     - ip: 10.15.27.19
     - ip: 10.15.27.20
+    # Comment/Uncomment this added later in the lab
+    - ip: 10.15.27.21
+
+# Add later in lab
+fabric_external:
+  name: external-fabric-stage
+  asn: 9999
+  inventory:
+    - seed_ip: 10.15.27.22
+      auth_proto: MD5
+      user_name: admin
+      password: "cisco.123"
+      max_hops: 0
+      preserve_config: true
+      role: "edge_router"

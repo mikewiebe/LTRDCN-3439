@@ -7,8 +7,8 @@
   gather_facts: false
 
   roles:
-    # - create-fabric
-    # - add-inventory
+    - create-fabric
+    - add-inventory
     - setup-vpc
-    # - manage-interfaces
-    # - add-overlay
+    - manage-interfaces
+    - add-overlay

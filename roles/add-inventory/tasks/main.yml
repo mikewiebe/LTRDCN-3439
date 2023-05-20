@@ -18,5 +18,5 @@
   ansible.builtin.include_tasks: add_fabric.yml
 
 # Add later in lab
-- name: Include Tasks to Add Devices to External Fabric
-  ansible.builtin.include_tasks: add_fabric_external.yml
+# - name: Include Tasks to Add Devices to External Fabric
+#   ansible.builtin.include_tasks: add_fabric_external.yml

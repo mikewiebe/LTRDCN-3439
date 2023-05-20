@@ -12,8 +12,8 @@
     fabric: "{{ fabric.name }}"
     state: query
     config:
-      - seed_ip: 10.15.27.19
-      - seed_ip: 10.15.27.20
+      - seed_ip: "{{ fabric.leaf[0].ip }}"
+      - seed_ip: "{{ fabric.leaf[1].ip }}"
   register: query_result
 
 # - debug: msg="{{ item.isVpcConfigured }}"
@@ -45,8 +45,8 @@
     fabric: "{{ fabric.name }}"
     state: query
     config:
-      - seed_ip: 10.15.27.19
-      - seed_ip: 10.15.27.20
+      - seed_ip: "{{ fabric.leaf[0].ip }}"
+      - seed_ip: "{{ fabric.leaf[1].ip }}"
   register: query_result
   until:
     - query_result.response[0].isVpcConfigured

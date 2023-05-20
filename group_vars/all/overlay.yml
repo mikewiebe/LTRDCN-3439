@@ -1,4 +1,3 @@
-
 ---
 vrfs:
   - vrf_name: &refvrf_devnet vrf_devnet
@@ -22,4 +21,3 @@ networks:
     vlan_name: network_devnet2_vlan2302
     gw_ip_subnet: "192.168.12.1/24"
     attach_group: esxi
-

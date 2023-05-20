@@ -1,0 +1,41 @@
+---
+
+- name: Create Host Facing Access Interfaces On Leaf1 and Leaf2
+  cisco.dcnm.dcnm_interface:
+    check_deploy: True
+    fabric: "{{ fabric.name }}" 
+    state: merged
+    config:
+      - name: "eth1/1"
+        type: eth
+        switch:
+          - "{{ fabric.leaf[0].ip }}"
+        deploy: true
+        profile:
+          admin_state: true
+          mode: access
+          speed: 'Auto'
+          bpdu_guard: false
+          port_type_fast: true
+          mtu: jumbo
+          access_vlan: 2301
+          cmds:
+            - no shutdown
+          description: "VLAN 2301 Access Interface"
+
+      - name: "eth1/1"
+        type: eth
+        switch:
+          - "{{ fabric.leaf[1].ip }}"
+        deploy: true
+        profile:
+          admin_state: true
+          mode: access
+          speed: 'Auto'
+          bpdu_guard: false
+          port_type_fast: true
+          mtu: jumbo
+          access_vlan: 2302
+          cmds:
+            - no shutdown
+          description: "VLAN 2302 Access Interface"

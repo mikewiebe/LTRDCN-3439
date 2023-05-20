@@ -1,0 +1,11 @@
+---
+
+- name: Query Until POAP Switch Becomes Available
+  cisco.dcnm.dcnm_inventory:
+    fabric: "{{ fabric.name }}"
+    query_poap: True
+    state: query
+  register: result
+  until: result.response | length == 4
+  retries: 5
+  delay: 1

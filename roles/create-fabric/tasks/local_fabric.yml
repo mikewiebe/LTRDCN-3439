@@ -1,0 +1,30 @@
+---
+
+- ansible.builtin.set_fact:
+    create_fabric: True
+
+- ansible.builtin.set_fact:
+    create_fabric: False
+  when: item.fabricName == fabric.name
+  loop: "{{ result.response.DATA }}"
+  loop_control:
+    label: "{{ item.fabricName }}"
+
+- ansible.builtin.debug:
+    msg: "Fabric {{ fabric.name}} Already Exists"
+  when: not create_fabric
+
+- name: Create Fabric {{ fabric.name }} on NDFC
+  vars:
+    payload:
+        BGP_AS: "{{ fabric.asn }}"
+        GRFIELD_DEBUG_FLAG: "Enable"
+        OVERLAY_MODE: "cli"
+        VRF_LITE_AUTOCONFIG: "ToExternalOnly"
+        DCI_SUBNET_RANGE: "10.31.0.0/16"
+        AUTO_SYMMETRIC_VRF_LITE: true
+  cisco.dcnm.dcnm_rest:
+    method: POST
+    path: "/appcenter/cisco/ndfc/api/v1/lan-fabric/rest/control/fabrics/{{ fabric.name }}/Easy_Fabric"
+    json_data: "{{ payload| to_json }}"
+  when: create_fabric

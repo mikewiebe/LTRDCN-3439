@@ -23,26 +23,19 @@ fabric:
       max_hops: 0
       role: leaf
       preserve_config: false
-    # Comment/Uncomment this added later in the lab
+    # POAP add later in lab
     - seed_ip: 10.15.27.14
       user_name: admin
       password: "cisco.123"
-      max_hops: 0
       role: border
-      preserve_config: false
-
-    # - seed_ip: 10.15.27.14
-    #   user_name: admin
-    #   password: "cisco.123"
-    #   role: border
-    #   poap:
-    #     - serial_number: 98E394N6J8J
-    #       model: 'N9K-C9300v'
-    #       version: '9.3(8)'
-    #       hostname: 'staging-leaf3'
-    #       config_data:
-    #         modulesModel: [N9K-X9364v, N9K-vSUP]
-    #         gateway: 10.15.27.1/24
+      poap:
+        - serial_number: "9IZOB1DARSA"
+          model: 'N9K-C9300v'
+          version: '9.3(8)'
+          hostname: 'staging-leaf3'
+          config_data:
+            modulesModel: [N9K-X9364v, N9K-vSUP]
+            gateway: 10.15.27.1/24
   spine:
     - ip: 10.15.27.11
   leaf:

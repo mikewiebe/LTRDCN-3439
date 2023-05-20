@@ -1,0 +1,18 @@
+---
+
+# Add later in lab for POAP
+- name: Enable POAP For {{ fabric.name }} on NDFC
+  vars:
+    payload:
+        BOOTSTRAP_ENABLE: true
+        DHCP_ENABLE: true
+        DHCP_IPV6_ENABLE: "DHCPv4"
+        DHCP_START: "10.15.0.100"
+        DHCP_END: "10.15.0.101"
+        MGMT_GW: "10.15.0.1"
+        MGMT_PREFIX: "24"
+        BOOTSTRAP_MULTISUBNET: "10.15.27.100,10.15.27.101,10.15.27.1,24"
+  cisco.dcnm.dcnm_rest:
+    method: PUT
+    path: "/appcenter/cisco/ndfc/api/v1/lan-fabric/rest/control/fabrics/{{ fabric.name }}/Easy_Fabric"
+    json_data: "{{ payload| to_json }}"

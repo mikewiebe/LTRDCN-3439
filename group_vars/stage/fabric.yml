@@ -3,6 +3,7 @@
 fabric:
   name: fabric-stage
   asn: 65027
+  enable_poap: true
   inventory:
     - seed_ip: 10.15.27.11
       auth_proto: MD5

@@ -3,6 +3,7 @@
 fabric:
   name: fabric-prod
   asn: 65027
+  enable_poap: false
   inventory:
     - seed_ip: 10.15.27.18
       auth_proto: MD5
@@ -28,7 +29,7 @@ fabric:
       user_name: admin
       password: "cisco.123"
       max_hops: 0
-      role: leaf
+      role: border
       preserve_config: false
   spine:
     - ip: 10.15.27.18
@@ -40,7 +41,7 @@ fabric:
 
 # Add later in lab
 fabric_external:
-  name: external-fabric-stage
+  name: external-fabric-prod
   asn: 9999
   inventory:
     - seed_ip: 10.15.27.22

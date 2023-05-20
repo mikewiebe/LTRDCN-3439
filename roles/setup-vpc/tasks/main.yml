@@ -7,23 +7,50 @@
       - "+             Calling Role - [setup-vpc]                       +"
       - "----------------------------------------------------------------"
 
-- name: Query for vPC interface between leaf1 and leaf2
-  cisco.dcnm.dcnm_interface:
+- name: Query Fabric {{ fabric.name }} Leaf1 and Leaf2 for VPC Configuration
+  cisco.dcnm.dcnm_inventory:
     fabric: "{{ fabric.name }}"
     state: query
-    config: "{{ interface.vpc }}"
+    config:
+      - seed_ip: 10.15.27.19
+      - seed_ip: 10.15.27.20
   register: query_result
+
+# - debug: msg="{{ item.isVpcConfigured }}"
+#   loop: "{{ query_result.response }}"
+#   loop_control:
+#     label: "{{ item.isVpcConfigured }}"
 
 # Use flag variable 'setup_vpc' to track if we need to setup vpc.
 # If it's already setup we can skip it
 - ansible.builtin.set_fact:
-    setup_vpc: False
-- ansible.builtin.set_fact:
     setup_vpc: True
-  when: query_result.response | length == 0
+- ansible.builtin.set_fact:
+    setup_vpc: False
+  when: item.isVpcConfigured == true
+  loop: "{{ query_result.response }}"
+  loop_control:
+    label: "{{ item.isVpcConfigured }}"
+
+- debug: msg="Setup VPC IS - {{ setup_vpc }}"
 
 - name: Setup VPC Peer If Not Already Setup
   block:
     - name: Include Tasks To Create VPC Peer Between Leaf1 and Leaf2
       ansible.builtin.include_tasks: setup_vpc_peer.yml
   when: setup_vpc
+
+- name: Query Fabric {{ fabric.name }} Leaf Devices Until VCP Pair Is Configured
+  cisco.dcnm.dcnm_inventory:
+    fabric: "{{ fabric.name }}"
+    state: query
+    config:
+      - seed_ip: 10.15.27.19
+      - seed_ip: 10.15.27.20
+  register: query_result
+  until:
+    - query_result.response[0].isVpcConfigured
+    - query_result.response[1].isVpcConfigured
+  retries: 30
+  delay: 5
+

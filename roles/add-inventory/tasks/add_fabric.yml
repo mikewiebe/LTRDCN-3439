@@ -1,6 +1,6 @@
 ---
 
-- name: Add switches to fabric  {{ fabric.name }}
+- name: Add switches to {{ fabric.name }}
   cisco.dcnm.dcnm_inventory:
     fabric: "{{ fabric.name }}"
     state: merged

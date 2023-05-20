@@ -1,7 +1,7 @@
 ---
 
 # Add later in lab
-- name: Add switches to fabric  {{ fabric_external.name }}
+- name: Add switches to {{ fabric_external.name }}
   cisco.dcnm.dcnm_inventory:
     fabric: "{{ fabric_external.name }}"
     state: merged

@@ -12,6 +12,7 @@
 # Add Later in the lab
 - name: Include Tasks To Query For POAP Enabled Switches
   ansible.builtin.include_tasks: query_poap.yml
+  when: fabric.enable_poap
 
 - name: Include Tasks to Add Devices to Local Fabric
   ansible.builtin.include_tasks: add_fabric.yml
